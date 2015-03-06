@@ -1,0 +1,35 @@
+---
+title: "R_week1_homework"
+output: html_document
+---
+
+```{r, echo=F}
+  csv_data <- read.csv("hw1_data.csv", strip.white=T)
+```
+
+## List only the rows that don't have NA values in the Ozone column
+
+```{r}
+  # create a logical vector that identifies NA values
+  is_ozone_na = is.na(csv_data[,1])
+  ozone_good_rows = csv_data[!is_ozone_na,]
+  rm(is_ozone_na)
+  ozm <- mean(ozone_good_rows[,1])
+  #print the mean
+  print(c("Mean Ozone: ", ozm))
+  rm(ozone_good_rows)
+  rm(ozm)
+```
+
+## Plot all the values by date
+
+```{r, echo=F}
+  aux <- paste("2015.",csv_data[,5],".",csv_data[,6])
+  
+  dv <- lapply(aux, function(x){as.Date(x)})
+  #plot(, csv_data[,1])
+```
+
+```{r, echo=F}
+  rm(csv_data)
+```
