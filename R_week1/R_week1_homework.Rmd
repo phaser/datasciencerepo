@@ -21,13 +21,12 @@ output: html_document
   rm(ozm)
 ```
 
-## Plot all the values by date
+## Plot all the Ozone by date
 
 ```{r, echo=F}
   aux <- paste("2015.",csv_data[,5],".",csv_data[,6])
-  
-  dv <- lapply(aux, function(x){as.Date(x)})
-  #plot(, csv_data[,1])
+  aux <- as.Date(aux, "%Y. %m . %d")
+  plot(aux, csv_data[,1], type="s", xlab="Data masurarii", ylab="Ozone value", main="Ozone values troughout the year")
 ```
 
 ```{r, echo=F}
