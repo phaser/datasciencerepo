@@ -1,0 +1,92 @@
+---
+title: "EDA_week1"
+output: html_document
+---
+
+
+```{r}
+csv <- read.csv("data/avgpm25.csv",
+                colClasses=c("numeric", "character", "factor", "numeric", "numeric"))
+summary(csv$pm25)
+boxplot(csv$pm25, col="blue")
+hist(csv$pm25, col="green", breaks=100)
+rug(csv$pm25)
+```
+
+```{r}
+boxplot(csv$pm25, col="blue")
+abline(h=12)
+```
+
+```{r}
+hist(csv$pm25, col="green", breaks=100)
+rug(csv$pm25)
+abline(v = median(csv$pm25), col="magenta", lwd=4)
+```
+
+```{r}
+barplot(table(csv$region), col="wheat", main = "Number of counties in the region")
+```
+
+## Simple summaries of data
+
+```{r}
+boxplot(pm25 ~ region, data = csv, col = "red")
+```
+
+Two graphics grouped in two rows and on the same column.
+```{r}
+par(mfrow = c(2, 1), mar=c(4, 4, 2, 1))
+hist(subset(csv, region=="east")$pm25, col="green")
+hist(subset(csv, regions="west")$pm25, col="green")
+```
+
+Scatter plot
+```{r}
+with(csv, plot(latitude, pm25))
+abline(h=12, lwd=2, lty=2)
+```
+
+Color dots by region. Eastern = black, Western = red
+```{r}
+with(csv, plot(latitude, pm25, col = region))
+abline(h=12, lwd=2, lty=2)
+```
+
+We can also plot values on East, West in different graphs aligned side by side.
+```{r}
+par(mfrow=c(1,2), mar=c(5, 4, 2, 1))
+with(subset(csv, region=="west"), plot(latitude, pm25, main="West"))
+with(subset(csv, regions="east"), plot(latitude, pm25, main="East"))
+```
+
+## Basic Plot Systems
+
+```{r}
+library(datasets)
+airquality <- transform(airquality, Month = factor(Month))
+boxplot(Ozone ~ Month, airquality, xlab = "Month", ylab = "Ozone (ppb)")
+```
+
+```{r}
+# it doesn't output anything on the plot, just an empty plot
+with(airquality, plot(Wind, Ozone, main = "Ozone and Wind in New York City", type="n"))
+# Now we can add to it
+with(subset(airquality, Month != 5), points(Wind, Ozone, col="red"))
+with(subset(airquality, Month == 5), points(Wind, Ozone, col="blue", pch="o"))
+legend("topright", pch=1, col=c("blue", "red"), legend=c("May", "Other months"))
+```
+
+```{r}
+with(airquality, plot(Wind, Ozone, main = "Ozone and Wind in New York City", pch=20))
+model <- lm(Ozone ~ Wind, airquality)
+abline(model, lwd=2)
+```
+
+```{r}
+par(mfrow=c(1,2))
+with(airquality, {
+    plot(Wind, Ozone, main = "Wind Ozone", pch=20)
+    plot(Solar.R, Ozone, main = "Solar Ozone", pch=20)
+})
+```
