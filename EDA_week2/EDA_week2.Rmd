@@ -1,0 +1,22 @@
+---
+title: "EDA_week2"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+qplot(displ, hwy, data = mpg, color=drv)
+```
+
+If I give only one variable qplot will create a histogram.
+
+```{r}
+qplot(hwy, data=mpg, fill=drv)
+```
+
+Facets
+
+```{r}
+qplot(displ, hwy, data=mpg, facets=. ~ drv)
+qplot(hwy, data=mpg, facets=drv~., binwidth=2)
+```
