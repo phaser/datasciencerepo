@@ -1,0 +1,22 @@
+---
+title: "Testing out plots"
+output: html_document
+---
+
+I'll use the cars dataset to try out composed bar plots.
+```{r}
+names(mtcars)
+```
+
+
+```{r, echo=FALSE}
+library(ggplot2)
+
+bp <- ggplot(
+      data=mtcars
+    , aes(x=row.names(mtcars), y=mpg)
+    ) + geom_bar(fill="#FF7878", stat="identity")
+
+bp + coord_flip() 
+```
+

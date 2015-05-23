@@ -1,0 +1,59 @@
+---
+title: "A study on severe weather events"
+author: "Cristian Bidea"
+date: "23 May 2015"
+output: html_document
+---
+
+## Synopsis
+
+## Data processing
+
+The data comes in the form of a comma-separated-value file compressed via the bzip2 algorithm to reduce its size.
+
+```{r, results="hide"}
+# create the directory if it doesn't exist
+if (!file.exists("data"))
+{
+    dir.create("data")
+}
+
+# download the data file if it isn't already there
+if (!file.exists("data/stormdata.csv.bz2"))
+{
+    download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2", destfile="data/stormdata.csv.bz2", method="curl")
+}
+
+# Now that we're sure that we have the data let's load it up
+csv <- read.csv("data/stormdata.csv.bz2")
+```
+
+## Weather events and their impact on people
+
+```{r}
+library(ggplot2)
+library(reshape2)
+
+fat <- aggregate(cbind(Fatalities=csv$FATALITIES, Injuries=csv$INJURIES), by=list(Event=csv$EVTYPE), FUN=sum)
+
+# Remove those that didn't had any impact
+fat <- fat[fat$Fatalities != 0 | fat$Injuries != 0,]
+
+# Order them by fatalities, injuries
+fat <- fat[order(fat$Fatalities, fat$Injuries, decreasing=TRUE),]
+fat <- fat[1:10,]
+fat <- melt(fat[,c('Event', 'Fatalities', 'Injuries')], id.vars=1)
+
+# plot
+g <- ggplot(fat)
+g <- g + geom_bar(stat="identity", aes(x=reorder(Event, value), y=value, fill=variable), position="dodge")
+g <- g + coord_flip()
+g <- g + facet_grid(. ~ variable)
+g <- g + xlab("Event")
+g <- g + ylab("Impact: Fatalities, Injuries")
+print(g)
+```
+
+The first ten events ordered by their impact are shown on the plot. Tornadoes are by far the worst event considering the high number of injuries and fatalities.
+
+## Economic impact
