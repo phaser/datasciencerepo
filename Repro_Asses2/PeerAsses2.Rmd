@@ -7,6 +7,10 @@ output: html_document
 
 ## Synopsis
 
+I'm using the NOAA Storm Database that records weather events and their impact and
+I'm identifying the most impactful weather events with respect to population health
+and economic impact.
+
 ## Data processing
 
 The data comes in the form of a comma-separated-value file compressed via the bzip2 algorithm to reduce its size.
@@ -30,6 +34,9 @@ csv <- read.csv("data/stormdata.csv.bz2")
 
 ## Weather events and their impact on people
 
+We're looking at the number of injuries and fatalities caused by various weather
+events, to identify the most impactful ones.
+
 ```{r}
 library(ggplot2)
 library(reshape2)
@@ -51,9 +58,58 @@ g <- g + coord_flip()
 g <- g + facet_grid(. ~ variable)
 g <- g + xlab("Event")
 g <- g + ylab("Impact: Fatalities, Injuries")
+g <- g + ggtitle("The most harmful weather events with respect to population health")
 print(g)
 ```
 
-The first ten events ordered by their impact are shown on the plot. Tornadoes are by far the worst event considering the high number of injuries and fatalities.
+The first ten events ordered by their impact are shown on the plot. Tornadoes are 
+by far the worst event considering the high number of injuries and fatalities.
 
 ## Economic impact
+
+We want to study the economic impact of the weather events.
+
+```{r}
+options("scipen"=100, "digits"=4)
+# Select the fields with K $
+eco <- csv[csv$PROPDMGEXP == "K",]
+# and aggregate them by EVTYPE
+eco1 <- aggregate(csv$PROPDMG, by=list(Event=csv$EVTYPE), FUN=sum)
+# Do the same for M $
+eco <- csv[csv$PRODDMGEXP == "M"]
+eco2 <- aggregate(csv$PROPDMG, by=list(Event=csv$EVTYPE), FUN=sum)
+
+# Merge them together
+newnum = eco1$x / 1000 + eco2$x
+# ... and place the new number in eco1, we'll use eco1 from now
+eco1$x <- newnum
+eco1 <- eco1[eco1$x != 0,]
+eco1 <- eco1[order(eco1$x, decreasing=TRUE),]
+# Retain the first 10
+eco1 <- eco1[1:10,]
+
+g <- ggplot(eco1)
+g <- g + geom_bar(stat="identity", aes(x=reorder(Event, x), y=x), position="dodge", fill="steelblue")
+g <- g + coord_flip()
+g <- g + xlab("Event")
+g <- g + ylab("Impact: Damages in millions of $")
+g <- g + ggtitle("The most harmful weather events with respect to economic loss")
+print(g)
+```
+
+# Results
+
+Tornadoes are the most devastating weather events. They are causing a high number
+of human casualties and extremely high economic losses. Until now they've caused
+the loss of 3000000 million of $. 5633 people died and 91346 were injured during
+the tornadoes.
+
+Of course there are other weather events that have a high impact as well: Flood,
+Lightning, Wind. A curious thing is that there are some events who are causing
+high losses of humman lives or are causing injuries but they have a small or non-existent
+economic impact. Events involving heat can be seen in the top 10 list with harmful
+events for people but they are not on the top 10 list of weather events with economic
+impact.
+```{r}
+
+```

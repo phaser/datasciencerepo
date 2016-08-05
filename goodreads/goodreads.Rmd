@@ -1,0 +1,16 @@
+---
+title: "Getting Info out of GoodReads"
+author: "Cristian Bidea"
+date: "5 August 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+text <- readLines("goodreads_reading_challenge.html", encoding = "UTF-8")
+text <- text[grep("<img.*class=\"bookCover\"", text)]
+book <- data.frame(bid=rep(0, 14))
+```
