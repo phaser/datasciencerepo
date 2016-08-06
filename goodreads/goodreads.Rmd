@@ -12,5 +12,26 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 text <- readLines("goodreads_reading_challenge.html", encoding = "UTF-8")
 text <- text[grep("<img.*class=\"bookCover\"", text)]
-book <- data.frame(bid=rep(0, 14))
+regexpression <- "<a id=\"(.*)\" class=\"(.*)\" href=\"(.*)\"><img alt=\"(.*)\" class=\"(.*)\" src=\"(.*)\"></a>"
+titles <- lapply(text, function(x) {
+    m <- regexec(regexpression, x)
+    regm <- regmatches(x, m)
+    result <- regm[[1]][5]
+})
+
+links <- lapply(text, function(x) {
+    m <- regexec(regexpression, x)
+    regm <- regmatches(x, m)
+    result <- regm[[1]][4]
+})
+
+covers <- lapply(text, function(x) {
+    m <- regexec(regexpression, x)
+    regm <- regmatches(x, m)
+    result <- sub("./goodreads_reading_challenge_files/", "", regm[[1]][7])
+})
+
+books <- data.frame(Title=simplify2array(titles),
+                    Link=simplify2array(links),
+                    Cover=simplify2array(covers))
 ```
