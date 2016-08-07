@@ -44,6 +44,9 @@ books <- data.frame(Title=simplify2array(titles),
 The goal is to get start_date, end_date, rating and number of pages and compile
 something resembling [Goodreads Year in review for 2015](https://www.goodreads.com/user/year_in_books/2015).
 
+Average rating and number of pages, we can get them using the Good Reads API,
+needing only a developer key.
+
 ```{r}
 library(RCurl)
 library(XML)
@@ -53,7 +56,11 @@ if (!exists("goodreads_devkey"))
     stop("please define goodreads_devkey and assign it your goodreads devkey")
 }
 
-avratings <- lapply(books$BookID, function(x) {
+books$AverageRating <- 0
+books$NumPages <- 0
+i <- 0
+
+rs <- lapply(books$BookID, function(x) {
     address <- paste("https://www.goodreads.com/book/show?id=", x, "&format=xml&key=", goodreads_devkey, sep="")
     print(address)
     xml <- getURL(address)
@@ -61,8 +68,13 @@ avratings <- lapply(books$BookID, function(x) {
     avr <- xml[grep("average_rating", xml)][1]
     avr <- sub("<average_rating>", "", avr)
     avr <- sub("</average_rating>", "", avr)
-    avr
+    
+    numpages <- xml[grep("num_pages", xml)][1]
+    numpages <- sub("<num_pages><!.CDATA.", "", numpages)
+    numpages <- sub("..></num_pages>", "", numpages)
+    i <<- i + 1
+    
+    books$AverageRating[i] <<- as.numeric(avr)
+    books$NumPages[i] <<- as.numeric(numpages)
 })
-
-books$AverageRating <- as.numeric(simplify2array(avratings))
 ```
