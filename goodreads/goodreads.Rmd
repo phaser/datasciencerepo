@@ -9,6 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+I'm parsing the reading challenge page to get info about the books I've red.
+
 ```{r}
 text <- readLines("goodreads_reading_challenge.html", encoding = "UTF-8")
 text <- text[grep("<img.*class=\"bookCover\"", text)]
@@ -25,13 +27,42 @@ links <- lapply(text, function(x) {
     result <- regm[[1]][4]
 })
 
-covers <- lapply(text, function(x) {
+book_ids <- lapply(text, function(x) {
     m <- regexec(regexpression, x)
     regm <- regmatches(x, m)
     result <- sub("./goodreads_reading_challenge_files/", "", regm[[1]][7])
+    result <- sub(".jpg", "", result)
 })
 
 books <- data.frame(Title=simplify2array(titles),
                     Link=simplify2array(links),
-                    Cover=simplify2array(covers))
+                    BookID=simplify2array(book_ids))
+```
+
+## Get detailed info about the books
+
+The goal is to get start_date, end_date, rating and number of pages and compile
+something resembling [Goodreads Year in review for 2015](https://www.goodreads.com/user/year_in_books/2015).
+
+```{r}
+library(RCurl)
+library(XML)
+
+if (!exists("goodreads_devkey"))
+{
+    stop("please define goodreads_devkey and assign it your goodreads devkey")
+}
+
+avratings <- lapply(books$BookID, function(x) {
+    address <- paste("https://www.goodreads.com/book/show?id=", x, "&format=xml&key=", goodreads_devkey, sep="")
+    print(address)
+    xml <- getURL(address)
+    xml <- simplify2array(strsplit(xml, "\n"))
+    avr <- xml[grep("average_rating", xml)][1]
+    avr <- sub("<average_rating>", "", avr)
+    avr <- sub("</average_rating>", "", avr)
+    avr
+})
+
+books$AverageRating <- as.numeric(simplify2array(avratings))
 ```
