@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-I'm parsing the reading challenge page to get info about the books I've red.
+I'm parsing the reading challenge page to get info about the books I've read this year.
 
 ```{r}
 text <- readLines("goodreads_reading_challenge.html", encoding = "UTF-8")
@@ -76,5 +76,62 @@ rs <- lapply(books$BookID, function(x) {
     
     books$AverageRating[i] <<- as.numeric(avr)
     books$NumPages[i] <<- as.numeric(numpages)
+    
+    # save the data for later
+    write.csv(books, file="books.csv")
 })
+```
+
+##Produce the infografic
+
+Read the data from *books.csv* and make the Infographic.
+
+```{r}
+    library(jpeg)
+    library(grid)
+    library(gtable)
+    library(gridExtra)
+    
+    books <- read.csv("books.csv")
+    books$NumPages[is.na(books$NumPages)] <- 39 # manual value
+    
+    books$Title <- factor(books$Title, levels=books$Title[order(books$NumPages)])  
+    
+    mp <- qplot(1:14, 1:14, geom="blank")
+    i <- 0.5
+    covers <- lapply(books$BookID[order(books$NumPages)], function(x) {
+        img <- readJPEG(paste("pics/", x, ".jpg", sep=""))
+        cover <- rasterGrob(img, interpolate=TRUE)
+        mp <<- mp + annotation_custom(cover, xmin=i, xmax=(i+1))
+        i <<- i + 1
+        return(cover)
+    })
+    mp <- mp + geom_blank()
+    mp <- mp + theme_bw()
+    mp <- mp + theme(axis.title.x = element_blank(), 
+                     axis.title.y = element_blank(),
+                     axis.text.x = element_blank(),
+                     axis.text.y = element_blank(),
+                     axis.ticks.x = element_blank(),
+                     axis.ticks.y = element_blank(),
+                     panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(),
+                     panel.border = element_blank(),
+                     panel.background = element_blank())
+
+    p <- ggplot(data=books, aes(x=Title, y=NumPages)) +
+        geom_bar(colour="black", fill="#FFDDCC", stat="identity") +
+        theme_classic() +
+        theme(axis.text.x = element_text(angle=90, hjust = 1)) +
+        annotate("text", label=paste("Total number of pages:", sum(books$NumPages)), x = 3, y = 500) +
+        annotate("text", label=paste("Median number of pages: ", median(books$NumPages)), x = 3, y = 400) +
+        geom_hline(yintercept = median(books$NumPages)) +
+        theme(axis.title.x = element_blank(),
+              axis.title.y = element_blank())
+        
+    g <- ggplotGrob(p)
+    g <- gtable_add_rows(g, unit(4, "cm"), pos=0)
+    g <- gtable_add_grob(g, ggplotGrob(mp), 1, 4)
+    grid.newpage()
+    grid.draw(g)
 ```
