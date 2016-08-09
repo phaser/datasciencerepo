@@ -1,15 +1,15 @@
-"","Title","Link","BookID","AverageRating","NumPages"
-"1","Creativity, Inc. by Ed Catmull","https://www.goodreads.com/book/show/18077903-creativity-inc","18077903",4.22,340
-"2","The Master Algorithm by Pedro Domingos","https://www.goodreads.com/book/show/24612233-the-master-algorithm","24612233",3.74,352
-"3","Cântec pentru Lya by George R.R. Martin","https://www.goodreads.com/book/show/29896105-c-ntec-pentru-lya","29896105",3.96,320
-"4","Cavalerul celor sapte regate by George R.R. Martin","https://www.goodreads.com/book/show/26911881-cavalerul-celor-sapte-regate","26911881",4.17,368
-"5","Elon Musk by Ashlee Vance","https://www.goodreads.com/book/show/22543496-elon-musk","22543496",4.21,392
-"6","Zero to One by Peter Thiel","https://www.goodreads.com/book/show/18050143-zero-to-one","18050143",4.17,195
-"7","A Whole New Mind by Daniel H. Pink","https://www.goodreads.com/book/show/99315.A_Whole_New_Mind","99315",3.95,304
-"8","The Cartoon Guide to Statistics by Larry Gonick","https://www.goodreads.com/book/show/168872.The_Cartoon_Guide_to_Statistics","168872",3.79,240
-"9","Start-up Nation by Dan Senor","https://www.goodreads.com/book/show/6885191-start-up-nation","6885191",4.1,304
-"10","Ask Me Anything by Reddit","https://www.goodreads.com/book/show/28100767-ask-me-anything","28100767",3.69,387
-"11","Dale Carnegie Best Quotes  by Dale Carnegie","https://www.goodreads.com/book/show/23344554-dale-carnegie-best-quotes","23344554",3.92,NA
-"12","Altered Carbon by Richard K. Morgan","https://www.goodreads.com/book/show/40445.Altered_Carbon","40445",4.1,526
-"13","The Undercover Economist by Tim Harford","https://www.goodreads.com/book/show/70420.The_Undercover_Economist","70420",3.78,276
-"14","Îmblânzirea infinitului. Povestea matematicii by Ian Stewart","https://www.goodreads.com/book/show/16096515-mbl-nzirea-infinitului-povestea-matematicii","16096515",3.85,328
+"","X","Title","Link","BookID","AverageRating","NumPages"
+"1",1,"Creativity, Inc. by Ed Catmull","https://www.goodreads.com/book/show/18077903-creativity-inc",18077903,4.22,340
+"2",2,"The Master Algorithm by Pedro Domingos","https://www.goodreads.com/book/show/24612233-the-master-algorithm",24612233,3.74,352
+"3",3,"Cântec pentru Lya by George R.R. Martin","https://www.goodreads.com/book/show/29896105-c-ntec-pentru-lya",29896105,3.96,320
+"4",4,"Cavalerul celor sapte regate by George R.R. Martin","https://www.goodreads.com/book/show/26911881-cavalerul-celor-sapte-regate",26911881,4.17,368
+"5",5,"Elon Musk by Ashlee Vance","https://www.goodreads.com/book/show/22543496-elon-musk",22543496,4.21,392
+"6",6,"Zero to One by Peter Thiel","https://www.goodreads.com/book/show/18050143-zero-to-one",18050143,4.17,195
+"7",7,"A Whole New Mind by Daniel H. Pink","https://www.goodreads.com/book/show/99315.A_Whole_New_Mind",99315,3.95,304
+"8",8,"The Cartoon Guide to Statistics by Larry Gonick","https://www.goodreads.com/book/show/168872.The_Cartoon_Guide_to_Statistics",168872,3.79,240
+"9",9,"Start-up Nation by Dan Senor","https://www.goodreads.com/book/show/6885191-start-up-nation",6885191,4.1,304
+"10",10,"Ask Me Anything by Reddit","https://www.goodreads.com/book/show/28100767-ask-me-anything",28100767,3.69,387
+"11",11,"Dale Carnegie Best Quotes  by Dale Carnegie","https://www.goodreads.com/book/show/23344554-dale-carnegie-best-quotes",23344554,3.92,NA
+"12",12,"Altered Carbon by Richard K. Morgan","https://www.goodreads.com/book/show/40445.Altered_Carbon",40445,4.1,526
+"13",13,"The Undercover Economist by Tim Harford","https://www.goodreads.com/book/show/70420.The_Undercover_Economist",70420,3.78,276
+"14",14,"Îmblânzirea infinitului. Povestea matematicii by Ian Stewart","https://www.goodreads.com/book/show/16096515-mbl-nzirea-infinitului-povestea-matematicii",16096515,3.85,328
